@@ -53,21 +53,18 @@ def print_clusters(new_centroids_param):
             print("Error. Check indexing of get_new_centroids")
 
     print("Cluster 1 :")
-    for i in cluster1:
-        print(i)
-    print("Cluster 2 :")
-    for i in cluster2:
-        print(i)
-    print("Cluster 3 :")
-    for i in cluster3:
-        print(i)
+    print(",".join([str(i) for i in cluster1]))
+    print("\nCluster 2 :")
+    print(",".join([str(i) for i in cluster2]))
+    print("\nCluster 3 :")
+    print(",".join([str(i) for i in cluster3]))
     return ""
 
 def main():
     # cluster datasets
     K = 3
     num_iters = 1;
-    iter = "Iteration "
+    iter = "\t\tIteration "
 
     df = pd.read_excel('sample_dataset.xlsx', header=None)
     initial_centroids = [0,3,6] # indices of examples 1,4,7
@@ -91,7 +88,7 @@ def main():
 
     #print centroids for initial iteration
     print("Centroids: ")
-    print(centroids)
+    print(centroids.tolist())
     print()
     # NEXT:
     num_iters += 1
@@ -100,7 +97,7 @@ def main():
     centroids = calc_centroids(get_new_centroids, all_points)
     print(print_clusters(closest_centroid(centroids, all_points)))
     print("Centroids: ")
-    print(np.array(centroids))
+    print(np.array(centroids).tolist())
     print()
 
     the_new_centroids = []
@@ -113,10 +110,10 @@ def main():
 
         print(print_clusters(closest_centroid(centroids, all_points)))
         print("Centroids: ")
-        print(np.array(centroids))
+        print(np.array(centroids).tolist())
         print()
         the_new_centroids = closest_centroid(centroids, all_points)
-    print("The newly computed centroids are the same as the previous ones.\nConvergence criterion met. \nFinal iteration. \nClustering complete.")
+    print("The newly computed centroids are the same as the previous ones.\nConvergence criterion met. \nFinal iteration number : " + str(num_iters) + "\nClustering complete.")
 
 
 if __name__ == "__main__":
