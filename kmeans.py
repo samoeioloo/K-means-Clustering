@@ -100,10 +100,6 @@ def main():
     print(np.array(centroids))
     print()
 
-
-
-
-
     the_new_centroids = []
 
     while ( (the_new_centroids == get_new_centroids) is not True): # while they arent equal
@@ -118,19 +114,6 @@ def main():
         print()
         the_new_centroids = closest_centroid(centroids, all_points)
     print("The newly computed centroids are the same as the previous ones.\nConvergence criterion met. \nFinal iteration. \nClustering complete.")
-    # place data into clusters
-    # cluster1 = np.random.randn(10,2) + centroid1
-    # cluster2 = np.random.randn(10,2) + centroid2
-    # cluster3 = np.random.randn(10,2) + centroid3
-    #
-    # data =  np.concatenate((cluster1, cluster2, cluster3), axis=0)
-    #
-    # # fit the data into the algo
-    # kmeans = K_Means(K)
-    # kmeans.fit_data(data)
-
-    #print centroids
-    #print(kmeans.centroids)
 
 
 if __name__ == "__main__":
