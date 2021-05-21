@@ -36,16 +36,36 @@ def calc_centroids(clusters, points):
 
     return new_centroids
 
+# printing cluster info
+def print_clusters(new_centroids_param):
+    cluster1 = []
+    cluster2 = []
+    cluster3 = []
+
+    for i in range(len(new_centroids_param)):
+        if (new_centroids_param[i] == 0): #cluster1
+            cluster1.append(i+1)
+        elif (new_centroids_param[i] == 1): #cluster2
+            cluster2.append(i+1)
+        elif (new_centroids_param[i] == 2): #cluster3
+            cluster3.append(i+1)
+        else:
+            print("Error. Check indexing of get_new_centroids")
+
+    print("Cluster 1 :")
+    print(cluster1)
+    print("Cluster 2 :")
+    print(cluster2)
+    print("Cluster 3 :")
+    print(cluster3)
+    return ""
+
 def main():
     # cluster datasets
     K = 3
     num_iters = 1;
     iter = "Iteration "
-    #set three centers as (2,10), (5,8), (1,2)
-    #centroid1 = np.array([2,10])
-    #centroid2 = np.array([5,8])
-    #centroid3 = np.array([1,2])
-    # read in sample data into a dataframe
+
     df = pd.read_excel('sample_dataset.xlsx', header=None)
     initial_centroids = [0,3,6] # indices of examples 1,4,7
     all_points = []
@@ -56,36 +76,48 @@ def main():
 
     for i in range(df.shape[0]):
         all_points.append(df.loc[i])
+
     centroids = np.array(centroids) # convert to 2d array
     all_points = np.array(all_points) # convert to 2d array
-    print(iter + str(num_iters))
+
+
+    print(iter + str(num_iters) + "\n")
+    # print clusters for inital iteration
+    # not invoking the calc_centroids because we have already been assigned the centroids in the spec
+    print(print_clusters(closest_centroid(centroids, all_points)))
+
+    #print centroids for initial iteration
     print("Centroids: ")
     print(centroids)
-    print("Points: ")
-    print(all_points)
-
+    print()
+    # NEXT:
     num_iters += 1
     print(iter + str(num_iters))
     get_new_centroids = closest_centroid(centroids, all_points)
     centroids = calc_centroids(get_new_centroids, all_points)
-    #print(get_new_centroids)
+    print(print_clusters(closest_centroid(centroids, all_points)))
+    print("Centroids: ")
+    print(np.array(centroids))
+    print()
+
+
+
+
+
     the_new_centroids = []
+
     while ( (the_new_centroids == get_new_centroids) is not True): # while they arent equal
         num_iters += 1
         print(iter + str(num_iters))
         get_new_centroids = closest_centroid(centroids, all_points)
         centroids = calc_centroids(get_new_centroids, all_points)
 
-        print("get_new_centroids: ")
-        print(get_new_centroids)
-        if (get_new_centroids == centroids):
-            print ("New centroids are equal to old centroids")
+        print(print_clusters(closest_centroid(centroids, all_points)))
         print("Centroids: ")
         print(np.array(centroids))
-        print("Points: ")
-        print(np.array(all_points))
+        print()
         the_new_centroids = closest_centroid(centroids, all_points)
-    print("The newly computed centroids are the same as the previous ones. \nFinal iteration. \nClustering complete.")
+    print("The newly computed centroids are the same as the previous ones.\nConvergence criterion met. \nFinal iteration. \nClustering complete.")
     # place data into clusters
     # cluster1 = np.random.randn(10,2) + centroid1
     # cluster2 = np.random.randn(10,2) + centroid2
