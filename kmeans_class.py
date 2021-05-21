@@ -45,3 +45,7 @@ class K_Means:
 
                 cluster_num = distances.index(min(distances))
                 self.classifications[cluster_num].append(pt) # add the point to its new cluster
+
+                 # Repeat above steps for all classifications in clusters
+                for cluster_num in self.classifications:
+                    self.centroids[cluster_num] = np.average(self.classifications[cluster_num], axis=0) # get new centroid
