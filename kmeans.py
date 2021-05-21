@@ -13,7 +13,7 @@ import math
 def distance(p1, p2):
     return np.linalg.norm(p1-p2, axis=0)
 
-# assign each data point to a centroid (minimum distance)
+# returns index of new assigned centroid
 def closest_centroid(allCentroids, points):
     new_centroid = []
     for i in points:
@@ -22,6 +22,18 @@ def closest_centroid(allCentroids, points):
             dist.append(distance(i,j))
         new_centroid.append(np.argmin(dist)) # find new centroid by selecting closest (least distance) centroid
     return new_centroid
+
+def calc_centroids(clusters, points):
+    new_centroids = []
+    new_df = pd.concat([pd.DataFrame(points), pd.DataFrame(clusters, columns=['Cluster'])], axis = 1) #create new dataframe with the new clusters
+
+    for c in set(new_df['Cluster']):
+        cluster = new_df[new_df['Cluster'] == c][new_df.columns[:-1]]
+        # find mean value of all points assigned to the centroid
+        cluster_avg = cluster.mean(axis=0)
+        new_centroids.append(cluster_avg) # move the centroid number to its average
+
+    return new_centroids
 class K_Means:
     # initialise default k value, error tolerance and maximum iterations
     def __init__(self, k=3, tolerance=0.001, max_iters = 500):
@@ -65,7 +77,8 @@ class K_Means:
 def main():
     # cluster datasets
     K = 3
-
+    num_iters = 1;
+    iter = "Iteration "
     #set three centers as (2,10), (5,8), (1,2)
     #centroid1 = np.array([2,10])
     #centroid2 = np.array([5,8])
@@ -75,6 +88,7 @@ def main():
     initial_centroids = [0,3,6] # indices of examples 1,4,7
     all_points = []
     centroids = []
+
     for i in initial_centroids:
         centroids.append(df.loc[i]) # get data points of initial centroids
 
@@ -82,11 +96,15 @@ def main():
         all_points.append(df.loc[i])
     centroids = np.array(centroids) # convert to 2d array
     all_points = np.array(all_points) # convert to 2d array
+    print(iter + str(num_iters))
     print("Centroids: ")
     print(centroids)
     print("Points: ")
     print(all_points)
+
+    num_iters += 1
     get_new_centroids = closest_centroid(centroids, all_points)
+    print(iter + str(num_iters))
     print(get_new_centroids)
     # place data into clusters
     # cluster1 = np.random.randn(10,2) + centroid1
