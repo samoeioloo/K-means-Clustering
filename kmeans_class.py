@@ -39,3 +39,9 @@ class K_Means:
                 distances = [] #list of distances for each point
                 for cntrd in self.centroids: # loop through centroids
                     distances.append(self.distance(pt,self.centroids[cntrd]))
+
+                # Compute the cluster each point belongs to
+                # Done by finding minimum distance
+
+                cluster_num = distances.index(min(distances))
+                self.classifications[cluster_num].append(pt) # add the point to its new cluster
