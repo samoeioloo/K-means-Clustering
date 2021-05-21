@@ -9,6 +9,19 @@ import random
 import matplotlib.pyplot as plt
 import math
 
+# calculate euclidean distance between to points
+def distance(p1, p2):
+    return np.linalg.norm(p1-p2, axis=0)
+
+# assign each data point to a centroid (minimum distance)
+def closest_centroid(allCentroids, points):
+    new_centroid = []
+    for i in points:
+        dist = []
+        for j in allCentroids:
+            dist.append(distance(i,j))
+        new_centroid.append(np.argmin(dist)) # find new centroid by selecting closest (least distance) centroid
+    return new_centroid
 class K_Means:
     # initialise default k value, error tolerance and maximum iterations
     def __init__(self, k=3, tolerance=0.001, max_iters = 500):
@@ -16,20 +29,10 @@ class K_Means:
         self.max_iters = max_iters
         self.tolerance = tolerance
 
-    # calculate euclidean distance between to points
-    def distance(self, p1, p2):
-        return np.linalg.norm(p1-p2, axis=0)
 
-    # assign each data point to a centroid (minimum distance)
-    def closest_centroid(allCentroids, point):
-        new_centroid = []
-        for i in point:
-            dist = []
-            for j in allCentroids:
-                dist.append(distance(i,j))
-            new_centroid.append(np.argmin(dist)) # find new centroid by selecting closest (least distance) centroid
-        return new_centroid
-        
+
+
+
     # assign first k points from dataset as initial centroids (examples 1,4,7 have been moved to be the first 3 points in dataset)
     def fit_data(self, data):
         self.centroids = {}
@@ -70,12 +73,21 @@ def main():
     # read in sample data into a dataframe
     df = pd.read_excel('sample_dataset.xlsx', header=None)
     initial_centroids = [0,3,6] # indices of examples 1,4,7
+    all_points = []
     centroids = []
     for i in initial_centroids:
         centroids.append(df.loc[i]) # get data points of initial centroids
 
+    for i in range(8):
+        all_points.append(df.loc[i])
     centroids = np.array(centroids) # convert to 2d array
+    all_points = np.array(all_points) # convert to 2d array
+    print("Centroids: ")
     print(centroids)
+    print("Points: ")
+    print(all_points)
+    get_new_centroids = closest_centroid(centroids, all_points)
+    print(get_new_centroids)
     # place data into clusters
     # cluster1 = np.random.randn(10,2) + centroid1
     # cluster2 = np.random.randn(10,2) + centroid2
