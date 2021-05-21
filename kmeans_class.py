@@ -23,7 +23,7 @@ class K_Means:
     # assign first k points from dataset as initial centroids (examples 1,4,7 have been moved to be the first 3 points in dataset)
     def fit_data(self, data):
         self.centroids = {}
-        #loop through and assign centroids
+        #loop through and assign centroids (step 1)
         for i in range(self.k):
             self.centroids[i] = data[i]
 
@@ -41,11 +41,15 @@ class K_Means:
                     distances.append(self.distance(pt,self.centroids[cntrd]))
 
                 # Compute the cluster each point belongs to
-                # Done by finding minimum distance
+                # Done by finding minimum distance (ie closest centroid) (step 2)
 
                 cluster_num = distances.index(min(distances))
-                self.classifications[cluster_num].append(pt) # add the point to its new cluster
+                self.classifications[cluster_num].append(pt) # add the point to its new cluster (step 3)
 
                  # Repeat above steps for all classifications in clusters
                 for cluster_num in self.classifications:
                     self.centroids[cluster_num] = np.average(self.classifications[cluster_num], axis=0) # get new centroid
+def main():
+    #dummy cluster datasets
+    K = 4
+    X, y_true = make
