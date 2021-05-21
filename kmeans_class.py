@@ -1,3 +1,8 @@
+# K means clustering
+# Samoei Oloo
+# 21 May 2021
+
+
 import pandas as pd
 import numpy as np
 import random as rand
@@ -6,9 +11,9 @@ import math
 
 class K_Means:
     # initialise default k value, error tolerance and maximum iterations
-    def __init__(self, k=3, tolerance=0.001, max_iterations = 500):
+    def __init__(self, k=3, tolerance=0.001, max_iters = 500):
         self.k = k
-        self.max_iterations = max_iterations
+        self.max_iters = max_iters
         self.tolerance = tolerance
 
     # calculate euclidean distance between to points
@@ -16,3 +21,15 @@ class K_Means:
         return np.linalg.norm(point1-point2, axis=0)
 
     # assign first k points from dataset as initial centroids (examples 1,4,7 have been moved to be the first 3 points in dataset)
+    def fit_data(self, data):
+        self.centroids = {}
+        #loop through and assign centroids
+        for i in range(self.k):
+            self.centroids[i] = data[i]
+
+        # begin clustering
+        for i in range(self.max_iters):
+            # create k classifications
+            self.classifications = {}
+            for j in range(self.k):
+                self.classifications[j] = [] #clear
