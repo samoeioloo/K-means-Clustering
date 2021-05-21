@@ -53,11 +53,14 @@ def print_clusters(new_centroids_param):
             print("Error. Check indexing of get_new_centroids")
 
     print("Cluster 1 :")
-    print(cluster1)
+    for i in cluster1:
+        print(i)
     print("Cluster 2 :")
-    print(cluster2)
+    for i in cluster2:
+        print(i)
     print("Cluster 3 :")
-    print(cluster3)
+    for i in cluster3:
+        print(i)
     return ""
 
 def main():
