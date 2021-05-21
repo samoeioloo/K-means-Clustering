@@ -33,3 +33,9 @@ class K_Means:
             self.classifications = {}
             for j in range(self.k):
                 self.classifications[j] = [] #clear
+
+            # calc distance between points and centroids
+            for pt in data:
+                distances = [] #list of distances for each point
+                for cntrd in self.centroids: # loop through centroids
+                    distances.append(self.distance(pt,self.centroids[cntrd]))
