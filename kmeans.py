@@ -23,6 +23,7 @@ def closest_centroid(allCentroids, points):
         new_centroid.append(np.argmin(dist)) # find new centroid by selecting closest (least distance) centroid
     return new_centroid
 
+# computes new centroids and assigns
 def calc_centroids(clusters, points):
     new_centroids = []
     new_df = pd.concat([pd.DataFrame(points), pd.DataFrame(clusters, columns=['Cluster'])], axis = 1) #create new dataframe with the new clusters
@@ -34,46 +35,7 @@ def calc_centroids(clusters, points):
         new_centroids.append(cluster_avg) # move the centroid number to its average
 
     return new_centroids
-class K_Means:
-    # initialise default k value, error tolerance and maximum iterations
-    def __init__(self, k=3, tolerance=0.001, max_iters = 500):
-        self.k = k
-        self.max_iters = max_iters
-        self.tolerance = tolerance
 
-
-
-
-
-    # assign first k points from dataset as initial centroids (examples 1,4,7 have been moved to be the first 3 points in dataset)
-    def fit_data(self, data):
-        self.centroids = {}
-        #loop through and assign centroids (step 1)
-        for i in range(self.k):
-            self.centroids[i] = data[i]
-
-        # begin clustering
-        for i in range(self.max_iters):
-            # create k classifications
-            self.classifications = {}
-            for j in range(self.k):
-                self.classifications[j] = [] #clear
-
-            # calc distance between points and centroids
-            for pt in data:
-                distances = [] #list of distances for each point
-                for cntrd in self.centroids: # loop through centroids
-                    distances.append(self.distance(pt,self.centroids[cntrd]))
-
-                # Compute the cluster each point belongs to
-                # Done by finding minimum distance (ie closest centroid) (step 2)
-
-                cluster_num = distances.index(min(distances))
-                self.classifications[cluster_num].append(pt) # add the point to its new cluster (step 3)
-
-                 # Repeat above steps for all classifications in clusters
-                for cluster_num in self.classifications:
-                    self.centroids[cluster_num] = np.average(self.classifications[cluster_num], axis=0) # get new centroid
 def main():
     # cluster datasets
     K = 3
@@ -102,6 +64,8 @@ def main():
     print("Points: ")
     print(all_points)
 
+    num_iters += 1
+    print(iter + str(num_iters))
     get_new_centroids = closest_centroid(centroids, all_points)
     centroids = calc_centroids(get_new_centroids, all_points)
     #print(get_new_centroids)
@@ -121,6 +85,7 @@ def main():
         print("Points: ")
         print(np.array(all_points))
         the_new_centroids = closest_centroid(centroids, all_points)
+    print("The newly computed centroids are the same as the previous ones. \nFinal iteration. \nClustering complete.")
     # place data into clusters
     # cluster1 = np.random.randn(10,2) + centroid1
     # cluster2 = np.random.randn(10,2) + centroid2
