@@ -5,7 +5,7 @@
 
 import pandas as pd
 import numpy as np
-import random as rand
+import random
 import matplotlib.pyplot as plt
 import math
 
@@ -18,8 +18,18 @@ class K_Means:
 
     # calculate euclidean distance between to points
     def distance(self, p1, p2):
-        return np.linalg.norm(point1-point2, axis=0)
+        return np.linalg.norm(p1-p2, axis=0)
 
+    # assign each data point to a centroid (minimum distance)
+    def closest_centroid(allCentroids, point):
+        new_centroid = []
+        for i in point:
+            dist = []
+            for j in allCentroids:
+                dist.append(distance(i,j))
+            new_centroid.append(np.argmin(dist)) # find new centroid by selecting closest (least distance) centroid
+        return new_centroid
+        
     # assign first k points from dataset as initial centroids (examples 1,4,7 have been moved to be the first 3 points in dataset)
     def fit_data(self, data):
         self.centroids = {}
@@ -51,14 +61,35 @@ class K_Means:
                     self.centroids[cluster_num] = np.average(self.classifications[cluster_num], axis=0) # get new centroid
 def main():
     # cluster datasets
-    K = 4
+    K = 3
 
     #set three centers as (2,10), (5,8), (1,2)
-    centroid1 = np.array([2,10])
-    centroid2 = np.array([5,8])
-    centroid3 = np.array([1,2])
+    #centroid1 = np.array([2,10])
+    #centroid2 = np.array([5,8])
+    #centroid3 = np.array([1,2])
+    # read in sample data into a dataframe
+    df = pd.read_excel('sample_dataset.xlsx', header=None)
+    initial_centroids = [0,3,6] # indices of examples 1,4,7
+    centroids = []
+    for i in initial_centroids:
+        centroids.append(df.loc[i]) # get data points of initial centroids
 
+    centroids = np.array(centroids) # convert to 2d array
+    print(centroids)
     # place data into clusters
-    cluster1 = np.random.randn(1,10) + centroid1
-    cluster2 = np.random.randn(1,10) + centroid2
-    cluster3 = np.random.randn(1,10) + centroid3
+    # cluster1 = np.random.randn(10,2) + centroid1
+    # cluster2 = np.random.randn(10,2) + centroid2
+    # cluster3 = np.random.randn(10,2) + centroid3
+    #
+    # data =  np.concatenate((cluster1, cluster2, cluster3), axis=0)
+    #
+    # # fit the data into the algo
+    # kmeans = K_Means(K)
+    # kmeans.fit_data(data)
+
+    #print centroids
+    #print(kmeans.centroids)
+
+
+if __name__ == "__main__":
+    main()
