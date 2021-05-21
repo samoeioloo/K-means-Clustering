@@ -1,3 +1,4 @@
 *.pdf
 requirements.txt
 *.xlsx
+/venv/

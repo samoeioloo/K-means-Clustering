@@ -63,7 +63,7 @@ def print_clusters(new_centroids_param):
 def main():
     # cluster datasets
     K = 3
-    num_iters = 1;
+    num_iters = 0;
     iter = "\t\tIteration "
 
     df = pd.read_excel('sample_dataset.xlsx', header=None)
@@ -115,6 +115,11 @@ def main():
         the_new_centroids = closest_centroid(centroids, all_points)
     print("The newly computed centroids are the same as the previous ones.\nConvergence criterion met. \nFinal iteration number : " + str(num_iters) + "\nClustering complete.")
 
+
+    plt.figure()
+    plt.scatter(np.array(centroids)[:, 0], np.array(centroids)[:, 1], color='black')
+    plt.scatter(all_points[:, 0], all_points[:, 1], alpha=0.1)
+    plt.show()
 
 if __name__ == "__main__":
     main()
