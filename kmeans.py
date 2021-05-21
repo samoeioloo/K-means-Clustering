@@ -92,7 +92,7 @@ def main():
     for i in initial_centroids:
         centroids.append(df.loc[i]) # get data points of initial centroids
 
-    for i in range(8):
+    for i in range(df.shape[0]):
         all_points.append(df.loc[i])
     centroids = np.array(centroids) # convert to 2d array
     all_points = np.array(all_points) # convert to 2d array
@@ -102,10 +102,25 @@ def main():
     print("Points: ")
     print(all_points)
 
-    num_iters += 1
     get_new_centroids = closest_centroid(centroids, all_points)
-    print(iter + str(num_iters))
-    print(get_new_centroids)
+    centroids = calc_centroids(get_new_centroids, all_points)
+    #print(get_new_centroids)
+    the_new_centroids = []
+    while ( (the_new_centroids == get_new_centroids) is not True): # while they arent equal
+        num_iters += 1
+        print(iter + str(num_iters))
+        get_new_centroids = closest_centroid(centroids, all_points)
+        centroids = calc_centroids(get_new_centroids, all_points)
+
+        print("get_new_centroids: ")
+        print(get_new_centroids)
+        if (get_new_centroids == centroids):
+            print ("New centroids are equal to old centroids")
+        print("Centroids: ")
+        print(np.array(centroids))
+        print("Points: ")
+        print(np.array(all_points))
+        the_new_centroids = closest_centroid(centroids, all_points)
     # place data into clusters
     # cluster1 = np.random.randn(10,2) + centroid1
     # cluster2 = np.random.randn(10,2) + centroid2
